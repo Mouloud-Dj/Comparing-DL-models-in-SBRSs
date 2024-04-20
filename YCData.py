@@ -1,10 +1,10 @@
 #pip install rs_datasets
 from rs_datasets import YooChoose
 import pandas as pd
-def get_yoochoose_100k():
+def get_yoochoose(N=100000):
     yc=YooChoose()
     data=yc.log
-    data=data[:100000]
+    data=data[:N]
     data.dropna()
     data.columns = ['session_id', 'timestamp', 'item_id','category']
     data['timestamp']=pd.to_datetime(data['timestamp'])
@@ -39,5 +39,13 @@ def create_sequences(df):
     return sequences, labels
 
 def get_sequences():
-    sequences, labels = create_sequences(get_yoochoose_100k())
+    sequences, labels = create_sequences(get_yoochoose())
     return sequences, labels
+
+def get_classes():
+    return max(get_sequences()[1])+1
+
+def testing(n):
+    sequences, labels = create_sequences(get_yoochoose(n))
+    return sequences, labels
+
